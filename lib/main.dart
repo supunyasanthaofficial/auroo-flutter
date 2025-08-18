@@ -29,10 +29,10 @@ class MyApp extends StatelessWidget {
         '/': (context) => const WelcomeScreen(),
 
         '/home': (context) => const BottomNavBar(),
-        '/about_us': (context) => const Aboutus(),
-        '/chat_support': (context) => const ChatSupport(),
-        '/privacy': (context) => const PrivacyPolicy(),
-        '/terms': (context) => const TermsOfService(),
+        '/about_us': (context) => const AboutUsScreen(),
+        '/chat_support': (context) => const ChatSupportScreen(),
+        '/privacy': (context) => const PrivacyPolicyScreen(),
+        '/terms': (context) => const TermsOfUseScreen(),
       },
     );
   }
