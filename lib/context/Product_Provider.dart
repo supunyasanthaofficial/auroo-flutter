@@ -208,6 +208,16 @@ class ProductProvider with ChangeNotifier {
   List<CartItem> get cartItems => _cartItems;
   List<CartItem> get orders => _orders;
 
+  void setOrders(List<CartItem> newOrders) {
+    _orders = newOrders;
+    notifyListeners();
+  }
+
+  // void placeOrder(List<CartItem> products) {
+  //   _orders.addAll(cartItems);
+  //   notifyListeners();
+  // }
+
   void addToCart(CartItem product) {
     final exists = _cartItems.any(
       (item) =>
