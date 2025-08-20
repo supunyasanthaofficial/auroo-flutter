@@ -6,7 +6,7 @@ import '../screens/My_Orders_Screen.dart';
 import '../screens/Profile_Screen.dart';
 
 class BottomNavBar extends StatefulWidget {
-  const BottomNavBar({Key? key}) : super(key: key);
+  const BottomNavBar({super.key});
 
   @override
   _BottomNavBarState createState() => _BottomNavBarState();
