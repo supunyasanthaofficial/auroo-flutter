@@ -6,6 +6,11 @@ import 'screens/Welcome_Screen.dart';
 import 'screens/AddProduct_Screen.dart';
 import 'screens/Cart_Screen.dart';
 import 'screens/ShopNow_Screen.dart';
+import 'screens/Login_Screen.dart';
+import 'screens/CheckOut_Screen.dart';
+import 'screens/Payment_Screen.dart';
+import 'screens/COD_Payment_Screen.dart';
+import 'screens/Card_Payment_Screen.dart';
 
 import 'navigation/bottom_nav_bar.dart';
 
@@ -54,6 +59,11 @@ class MyApp extends StatelessWidget {
           '/cart': (context) => const CartScreen(),
           '/shop_now': (context) => const ShopNowScreen(),
           '/add_product': (context) => const AddProductScreen(),
+          '/login': (context) => const LoginScreen(),
+          '/checkout': (context) => const CheckOutScreen(),
+          '/payment': (context) => const PaymentScreen(),
+          '/cod_payment': (context) => const CODPaymentScreen(),
+          '/card_payment': (context) => const CardPaymentScreen(),
         },
       ),
     );
