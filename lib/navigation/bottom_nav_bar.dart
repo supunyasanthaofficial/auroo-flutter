@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart'; // modern icon pack
 import '../screens/Home_Screen.dart';
 import '../screens/Search_Screen.dart';
 import '../screens/My_Orders_Screen.dart';
@@ -22,15 +23,33 @@ class _BottomNavBarState extends State<BottomNavBar> {
   ];
 
   void _onTabTapped(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
+    if (index != _currentIndex) {
+      setState(() {
+        _currentIndex = index;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[_currentIndex],
+      // Animated Screen Switcher
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 350),
+        transitionBuilder: (child, animation) {
+          final scaleAnimation = Tween<double>(begin: 0.95, end: 1.0).animate(
+            CurvedAnimation(parent: animation, curve: Curves.easeInOut),
+          );
+
+          return ScaleTransition(
+            scale: scaleAnimation,
+            child: FadeTransition(opacity: animation, child: child),
+          );
+        },
+        child: _screens[_currentIndex],
+      ),
+
+      // Bottom Navigation Bar
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: _onTabTapped,
@@ -38,13 +57,26 @@ class _BottomNavBarState extends State<BottomNavBar> {
         selectedItemColor: const Color.fromARGB(255, 127, 38, 150),
         unselectedItemColor: Colors.grey,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: "Search"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_bag),
+            icon: Icon(Ionicons.home_outline),
+            activeIcon: Icon(Ionicons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Ionicons.search_outline),
+            activeIcon: Icon(Ionicons.search),
+            label: "Search",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Ionicons.bag_handle_outline),
+            activeIcon: Icon(Ionicons.bag_handle),
             label: "Orders",
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
+          BottomNavigationBarItem(
+            icon: Icon(Ionicons.person_outline),
+            activeIcon: Icon(Ionicons.person),
+            label: "Profile",
+          ),
         ],
       ),
     );
