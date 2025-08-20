@@ -208,15 +208,16 @@ class ProductProvider with ChangeNotifier {
   List<CartItem> get cartItems => _cartItems;
   List<CartItem> get orders => _orders;
 
+  // Future<void> placeOrder(List<dynamic> items) async {
+  //   //API call to place order
+  //   print('Placing order for items: $items');
+  //   notifyListeners();
+  // }
+
   void setOrders(List<CartItem> newOrders) {
     _orders = newOrders;
     notifyListeners();
   }
-
-  // void placeOrder(List<CartItem> products) {
-  //   _orders.addAll(cartItems);
-  //   notifyListeners();
-  // }
 
   void addToCart(CartItem product) {
     final exists = _cartItems.any(
