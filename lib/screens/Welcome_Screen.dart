@@ -5,10 +5,10 @@ class FadeInWidget extends StatefulWidget {
   final Duration delay;
 
   const FadeInWidget({
-    Key? key,
+    super.key,
     required this.child,
     this.delay = Duration.zero,
-  }) : super(key: key);
+  });
 
   @override
   _FadeInWidgetState createState() => _FadeInWidgetState();
@@ -47,7 +47,7 @@ class _FadeInWidgetState extends State<FadeInWidget>
 }
 
 class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+  const WelcomeScreen({super.key});
 
   @override
   _WelcomeScreenState createState() => _WelcomeScreenState();
@@ -58,7 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     super.initState();
     // Navigate to /home after a delay to show the logo
-    Future.delayed(const Duration(seconds: 10), () {
+    Future.delayed(const Duration(seconds: 5), () {
       if (mounted) {
         debugPrint('Navigating to /home from WelcomeScreen');
         try {
