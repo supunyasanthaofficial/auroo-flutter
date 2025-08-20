@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ChatSupportScreen extends StatelessWidget {
@@ -47,7 +48,7 @@ class ChatSupportScreen extends StatelessWidget {
     final supportOptions = [
       {
         'id': 'whatsapp',
-        'icon': Icons.chat_bubble_outline,
+        'icon': FontAwesomeIcons.whatsapp,
         'label': 'WhatsApp',
         'description': 'Chat with us on WhatsApp for quick support.',
         'url': 'whatsapp://send?phone=+94112345678',
@@ -55,7 +56,7 @@ class ChatSupportScreen extends StatelessWidget {
       },
       {
         'id': 'instagram',
-        'icon': Icons.camera_alt_outlined,
+        'icon': FontAwesomeIcons.instagram,
         'label': 'Instagram',
         'description': 'Message us on Instagram for assistance.',
         'url':
@@ -64,7 +65,7 @@ class ChatSupportScreen extends StatelessWidget {
       },
       {
         'id': 'messenger',
-        'icon': Icons.message_outlined,
+        'icon': FontAwesomeIcons.facebookMessenger,
         'label': 'Messenger',
         'description': 'Reach out via Facebook Messenger.',
         'url': 'https://m.me/everefficient.official',
@@ -160,10 +161,12 @@ class ChatSupportScreen extends StatelessWidget {
                                   color: const Color(0xFFF3F4F6),
                                   borderRadius: BorderRadius.circular(25),
                                 ),
-                                child: Icon(
-                                  option['icon'] as IconData,
-                                  size: 30,
-                                  color: const Color(0xFF4B5563),
+                                child: Center(
+                                  child: FaIcon(
+                                    option['icon'] as IconData,
+                                    size: 30,
+                                    color: const Color(0xFF4B5563),
+                                  ),
                                 ),
                               ),
                               const SizedBox(width: 16),
@@ -203,7 +206,7 @@ class ChatSupportScreen extends StatelessWidget {
                         const Divider(color: Color(0xFFE5E7EB), thickness: 1),
                     ],
                   );
-                }).toList(),
+                }),
               ],
             ),
           ),
