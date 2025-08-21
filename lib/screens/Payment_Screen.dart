@@ -296,7 +296,7 @@ class _PaymentScreenState extends State<PaymentScreen> {
                           ],
                         ),
                       );
-                    }).toList(),
+                    }),
                     const SizedBox(height: 12),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
