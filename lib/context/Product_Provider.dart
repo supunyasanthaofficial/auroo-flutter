@@ -45,7 +45,7 @@ class CartItem {
 }
 
 class ProductProvider with ChangeNotifier {
-  List<Product> _products = [
+  final List<Product> _products = [
     Product(
       id: "1",
       name: "Floral Maxi Dress",
@@ -180,7 +180,7 @@ class ProductProvider with ChangeNotifier {
     ),
   ];
 
-  List<Product> _shopNowProducts = [
+  final List<Product> _shopNowProducts = [
     Product(
       id: "s1",
       name: "Summer Sale Skirt",
