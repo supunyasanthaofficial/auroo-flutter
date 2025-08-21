@@ -158,7 +158,7 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
     final shopNowProducts =
         ModalRoute.of(context)?.settings.arguments as List<Product>?;
 
-    if (shopNowProducts == null || productProvider.addToCart == null) {
+    if (shopNowProducts == null) {
       return const Scaffold(
         body: Center(
           child: Text(
@@ -467,7 +467,7 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
                             ),
                           ),
                         )
-                        ?.toList() ??
+                        .toList() ??
                     [],
               ),
               const SizedBox(height: 10),
@@ -506,7 +506,7 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
                             ),
                           ),
                         )
-                        ?.toList() ??
+                        .toList() ??
                     [],
               ),
               const SizedBox(height: 10),
