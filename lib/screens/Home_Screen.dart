@@ -459,67 +459,95 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             ],
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Stack(
                             children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(12),
-                                ),
-                                child: Image.network(
-                                  product.thumbnail,
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                        if (loadingProgress == null)
-                                          return child;
-                                        return const SizedBox(
-                                          height: 200,
-                                          child: Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        );
-                                      },
-                                  errorBuilder: (context, error, stackTrace) {
-                                    debugPrint('Product image error: $error');
-                                    return const SizedBox(
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(12),
+                                    ),
+                                    child: Image.network(
+                                      product.thumbnail,
                                       height: 200,
-                                      child: Center(
-                                        child: Icon(
-                                          Icons.image_not_supported,
-                                          size: 50,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return const SizedBox(
+                                              height: 200,
+                                              child: Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          },
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                            debugPrint(
+                                              'Product image error: $error',
+                                            );
+                                            return const SizedBox(
+                                              height: 200,
+                                              child: Center(
+                                                child: Icon(
+                                                  Icons.image_not_supported,
+                                                  size: 50,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF333333),
+                                            fontFamily: 'Helvetica',
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                ),
+                                        Text(
+                                          'LKR ${product.price.toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF8E44AD),
+                                            fontFamily: 'Helvetica',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      product.name,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xFF333333),
-                                        fontFamily: 'Helvetica',
-                                      ),
+                              Positioned(
+                                bottom: 8,
+                                right: 8,
+                                child: Container(
+                                  // decoration: BoxDecoration(
+                                  //   color: Color(0xFF8E44AD),
+                                  //   borderRadius: BorderRadius.circular(25),
+                                  // ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Color.fromARGB(255, 14, 13, 13),
+                                      size: 20,
                                     ),
-                                    Text(
-                                      'LKR ${product.price.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF8E44AD),
-                                        fontFamily: 'Helvetica',
-                                      ),
-                                    ),
-                                  ],
+                                    onPressed: () => _openModal(product),
+                                  ),
                                 ),
                               ),
                             ],
@@ -773,7 +801,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         )
-                        ?.toList() ??
+                        .toList() ??
                     [],
               ),
               const SizedBox(height: 12),
@@ -812,7 +840,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         )
-                        ?.toList() ??
+                        .toList() ??
                     [],
               ),
               const SizedBox(height: 12),

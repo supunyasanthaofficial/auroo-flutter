@@ -29,7 +29,7 @@ class _SearchScreenState extends State<SearchScreen> {
       print('Products: ${productProvider.products}');
       for (var i = 0; i < productProvider.products.length; i++) {
         final product = productProvider.products[i];
-        if (product.price == null || product.price <= 0) {
+        if (product.price <= 0) {
           print(
             'Product $i (${product.name}) has invalid price: ${product.price}',
           );
@@ -124,18 +124,6 @@ class _SearchScreenState extends State<SearchScreen> {
     final products = productProvider.products;
     final cartItems = productProvider.cartItems;
 
-    if (products == null || productProvider.addToCart == null) {
-      return const Scaffold(
-        body: Center(
-          child: Text(
-            'Error: Product context is not available. Ensure SearchScreen is wrapped in ProductProvider.',
-            style: TextStyle(fontSize: 16, color: Colors.red),
-            textAlign: TextAlign.center,
-          ),
-        ),
-      );
-    }
-
     final sortOptions = [
       {'label': 'Default', 'value': 'default'},
       {'label': 'Price: Low to High', 'value': 'lowToHigh'},
@@ -144,10 +132,6 @@ class _SearchScreenState extends State<SearchScreen> {
 
     final filteredProducts =
         products.where((product) {
-          if (product.name == null) {
-            print('Product missing name: $product');
-            return false;
-          }
           return product.name.toLowerCase().contains(_searchText.toLowerCase());
         }).toList()..sort((a, b) {
           final priceA = a.price;
@@ -364,68 +348,93 @@ class _SearchScreenState extends State<SearchScreen> {
                               ),
                             ],
                           ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Stack(
                             children: [
-                              ClipRRect(
-                                borderRadius: const BorderRadius.vertical(
-                                  top: Radius.circular(12),
-                                ),
-                                child: Image.network(
-                                  product.thumbnail.isNotEmpty
-                                      ? product.thumbnail
-                                      : 'https://via.placeholder.com/200',
-                                  height: 200,
-                                  width: double.infinity,
-                                  fit: BoxFit.cover,
-                                  loadingBuilder:
-                                      (context, child, loadingProgress) {
-                                        if (loadingProgress == null) {
-                                          return child;
-                                        }
-                                        return const SizedBox(
-                                          height: 200,
-                                          child: Center(
-                                            child: CircularProgressIndicator(),
-                                          ),
-                                        );
-                                      },
-                                  errorBuilder: (context, error, stackTrace) =>
-                                      const SizedBox(
-                                        height: 200,
-                                        child: Center(
-                                          child: Icon(
-                                            Icons.image_not_supported,
-                                            size: 50,
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: const BorderRadius.vertical(
+                                      top: Radius.circular(12),
+                                    ),
+                                    child: Image.network(
+                                      product.thumbnail.isNotEmpty
+                                          ? product.thumbnail
+                                          : 'https://via.placeholder.com/200',
+                                      height: 200,
+                                      width: double.infinity,
+                                      fit: BoxFit.cover,
+                                      loadingBuilder:
+                                          (context, child, loadingProgress) {
+                                            if (loadingProgress == null) {
+                                              return child;
+                                            }
+                                            return const SizedBox(
+                                              height: 200,
+                                              child: Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                            );
+                                          },
+                                      errorBuilder:
+                                          (context, error, stackTrace) =>
+                                              const SizedBox(
+                                                height: 200,
+                                                child: Center(
+                                                  child: Icon(
+                                                    Icons.image_not_supported,
+                                                    size: 50,
+                                                  ),
+                                                ),
+                                              ),
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.all(12),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.name,
+                                          style: const TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: Color(0xFF333333),
+                                            fontFamily: 'Helvetica',
                                           ),
                                         ),
-                                      ),
-                                ),
+                                        Text(
+                                          'Rs ${product.price.toStringAsFixed(2)}',
+                                          style: const TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w500,
+                                            color: Color(0xFF8E44AD),
+                                            fontFamily: 'Helvetica',
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
-                              Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      product.name,
-                                      style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600,
-                                        color: Color(0xFF333333),
-                                        fontFamily: 'Helvetica',
-                                      ),
+                              Positioned(
+                                bottom: 8,
+                                right: 8,
+                                child: Container(
+                                  // decoration: BoxDecoration(
+                                  //   color: Color(0xFF8E44AD),
+                                  //   borderRadius: BorderRadius.circular(25),
+                                  // ),
+                                  child: IconButton(
+                                    icon: const Icon(
+                                      Icons.add_shopping_cart,
+                                      color: Color.fromARGB(255, 14, 13, 13),
+                                      size: 20,
                                     ),
-                                    Text(
-                                      'Rs ${product.price.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w500,
-                                        color: Color(0xFF8E44AD),
-                                        fontFamily: 'Helvetica',
-                                      ),
-                                    ),
-                                  ],
+                                    onPressed: () => _openModal(product),
+                                  ),
                                 ),
                               ),
                             ],
@@ -654,7 +663,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                         )
-                        ?.toList() ??
+                        .toList() ??
                     [],
               ),
               const SizedBox(height: 12),
@@ -700,7 +709,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             ),
                           ),
                         )
-                        ?.toList() ??
+                        .toList() ??
                     [],
               ),
               const SizedBox(height: 12),
