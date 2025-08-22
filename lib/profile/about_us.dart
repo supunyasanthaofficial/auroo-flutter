@@ -89,29 +89,31 @@ class _AboutUsScreenState extends State<AboutUsScreen> {
             children: [
               _buildCard(
                 children: [
-                  Image.network(
-                    'https://everefficient.lk/assets/img/ee-images/ee-logo-new2.png',
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.contain,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const SizedBox(
-                        width: 160,
-                        height: 160,
-                        child: Center(
-                          child: CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.grey,
+                  Center(
+                    child: Image.network(
+                      'https://everefficient.lk/assets/img/ee-images/ee-logo-new2.png',
+                      width: 160,
+                      height: 160,
+                      fit: BoxFit.contain,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return const SizedBox(
+                          width: 160,
+                          height: 160,
+                          child: Center(
+                            child: CircularProgressIndicator(
+                              valueColor: AlwaysStoppedAnimation<Color>(
+                                Colors.grey,
+                              ),
                             ),
                           ),
-                        ),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) => const Icon(
-                      Icons.image_not_supported,
-                      size: 160,
-                      color: Colors.grey,
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.image_not_supported,
+                        size: 160,
+                        color: Colors.grey,
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),

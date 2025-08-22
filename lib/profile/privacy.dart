@@ -337,48 +337,19 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: _isLoading
-                          ? const Color(0xFF8E44AD).withOpacity(0.6)
-                          : const Color(0xFF8E44AD),
-                      padding: const EdgeInsets.all(14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
+                  _buildRow(
+                    icon: Icons.mail_outline,
+                    text: 'info@everefficient.lk',
+                    isButton: true,
                     onPressed: _isLoading ? null : _openEmail,
-                    child: _isLoading
-                        ? const CircularProgressIndicator(
-                            valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white,
-                            ),
-                          )
-                        : const Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Icon(
-                                Icons.mail_outline,
-                                color: Colors.white,
-                                size: 20,
-                              ),
-                              SizedBox(width: 10),
-                              Text(
-                                'info@everefficient.lk',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ],
-                          ),
+                    isLoading: _isLoading,
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 10),
                   _buildRow(
                     icon: Icons.phone_outlined,
                     text: '+94 112 345 678',
                   ),
+                  const SizedBox(height: 10),
                   _buildRow(
                     icon: Icons.location_on_outlined,
                     text: 'Kandy, Sri Lanka',
@@ -417,43 +388,94 @@ class _PrivacyPolicyScreenState extends State<PrivacyPolicyScreen> {
     required IconData icon,
     required String text,
     String? boldPart,
+    bool isButton = false,
+    VoidCallback? onPressed,
+    bool isLoading = false,
   }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, size: 20, color: const Color(0xFF4B5563)),
-          const SizedBox(width: 10),
-          Expanded(
-            child: boldPart != null
-                ? RichText(
-                    text: TextSpan(
+      child: isButton
+          ? ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: isLoading
+                    ? const Color(0xFF8E44AD).withOpacity(0.6)
+                    : const Color(0xFF8E44AD),
+                padding: const EdgeInsets.symmetric(
+                  vertical: 12,
+                  horizontal: 16,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                alignment: Alignment.centerLeft,
+              ),
+              onPressed: onPressed,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  isLoading
+                      ? const SizedBox(
+                          width: 20,
+                          height: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white,
+                            ),
+                          ),
+                        )
+                      : Icon(icon, size: 20, color: Colors.white),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Text(
+                      text,
                       style: const TextStyle(
                         fontSize: 15,
-                        color: Color(0xFF374151),
+                        color: Colors.white,
+                        fontWeight: FontWeight.w600,
                         height: 1.47,
                       ),
-                      children: [
-                        TextSpan(
-                          text: boldPart,
-                          style: const TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        TextSpan(text: text.substring(boldPart.length)),
-                      ],
-                    ),
-                  )
-                : Text(
-                    text,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      color: Color(0xFF374151),
-                      height: 1.47,
                     ),
                   ),
-          ),
-        ],
-      ),
+                ],
+              ),
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(icon, size: 20, color: const Color(0xFF4B5563)),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: boldPart != null
+                      ? RichText(
+                          text: TextSpan(
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Color(0xFF374151),
+                              height: 1.47,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: boldPart,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w600,
+                                ),
+                              ),
+                              TextSpan(text: text.substring(boldPart.length)),
+                            ],
+                          ),
+                        )
+                      : Text(
+                          text,
+                          style: const TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF374151),
+                            height: 1.47,
+                          ),
+                        ),
+                ),
+              ],
+            ),
     );
   }
 }
