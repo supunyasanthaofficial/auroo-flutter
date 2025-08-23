@@ -279,7 +279,7 @@ class _CardPaymentScreenState extends State<CardPaymentScreen> {
                     ],
                   ),
                 );
-              }).toList(),
+              }),
               Container(
                 padding: const EdgeInsets.all(20),
                 margin: const EdgeInsets.only(bottom: 24),

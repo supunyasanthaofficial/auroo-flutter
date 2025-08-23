@@ -32,6 +32,7 @@ class CartItem {
   final String color;
   final String image;
   final int quantity;
+  final String deliveryStatus; // Added deliveryStatus field
 
   CartItem({
     required this.id,
@@ -41,6 +42,7 @@ class CartItem {
     required this.color,
     required this.image,
     required this.quantity,
+    this.deliveryStatus = 'Ordered', // Default to 'Ordered'
   });
 }
 
@@ -208,12 +210,6 @@ class ProductProvider with ChangeNotifier {
   List<CartItem> get cartItems => _cartItems;
   List<CartItem> get orders => _orders;
 
-  // Future<void> placeOrder(List<dynamic> items) async {
-  //   //API call to place order
-  //   print('Placing order for items: $items');
-  //   notifyListeners();
-  // }
-
   void setOrders(List<CartItem> newOrders) {
     _orders = newOrders;
     notifyListeners();
@@ -240,6 +236,7 @@ class ProductProvider with ChangeNotifier {
             color: item.color,
             image: item.image,
             quantity: item.quantity + product.quantity,
+            deliveryStatus: item.deliveryStatus,
           );
         }
         return item;
@@ -282,6 +279,7 @@ class ProductProvider with ChangeNotifier {
               color: item.color,
               image: item.image,
               quantity: item.quantity + product.quantity,
+              deliveryStatus: item.deliveryStatus,
             );
           }
           return item;
@@ -319,6 +317,7 @@ class ProductProvider with ChangeNotifier {
           color: item.color,
           image: item.image,
           quantity: newQuantity,
+          deliveryStatus: item.deliveryStatus,
         );
       }
       return item;
@@ -334,8 +333,37 @@ class ProductProvider with ChangeNotifier {
   }
 
   void placeOrder(List<CartItem> products) {
-    _orders.addAll(products);
+    _orders.addAll(
+      products.map(
+        (item) => CartItem(
+          id: item.id,
+          name: item.name,
+          price: item.price,
+          size: item.size,
+          color: item.color,
+          image: item.image,
+          quantity: item.quantity,
+          deliveryStatus: 'Ordered', // Initialize with 'Ordered'
+        ),
+      ),
+    );
     notifyListeners();
+  }
+
+  void updateDeliveryStatus(int index, String status) {
+    if (index >= 0 && index < _orders.length) {
+      _orders[index] = CartItem(
+        id: _orders[index].id,
+        name: _orders[index].name,
+        price: _orders[index].price,
+        size: _orders[index].size,
+        color: _orders[index].color,
+        image: _orders[index].image,
+        quantity: _orders[index].quantity,
+        deliveryStatus: status,
+      );
+      notifyListeners();
+    }
   }
 
   void addProduct(Product newProduct) {

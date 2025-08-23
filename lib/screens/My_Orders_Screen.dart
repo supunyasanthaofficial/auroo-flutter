@@ -62,6 +62,54 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
     );
   }
 
+  void _confirmDelivery(
+    BuildContext context,
+    int index,
+    ProductProvider provider,
+  ) {
+    provider.updateDeliveryStatus(index, 'Delivered');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text(
+          'Order marked as delivered! Thank you for your purchase.',
+        ),
+        duration: Duration(seconds: 3),
+      ),
+    );
+  }
+
+  Widget _buildDeliveryStatus(String status) {
+    final statusMap = {
+      'Ordered': {'progress': 0.25, 'color': Colors.blue},
+      'Shipped': {'progress': 0.5, 'color': Colors.orange},
+      'Out for Delivery': {'progress': 0.75, 'color': Colors.purple},
+      'Delivered': {'progress': 1.0, 'color': Colors.green},
+    };
+
+    final progress = statusMap[status]?['progress'] as double? ?? 0.0;
+    final color = statusMap[status]?['color'] as Color? ?? Colors.grey;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Status: $status',
+          style: const TextStyle(
+            fontSize: 14,
+            color: Color(0xFF4B5563),
+            fontFamily: 'Helvetica',
+          ),
+        ),
+        const SizedBox(height: 4),
+        LinearProgressIndicator(
+          value: progress,
+          backgroundColor: const Color(0xFFE5E7EB),
+          valueColor: AlwaysStoppedAnimation<Color>(color),
+        ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final productProvider = Provider.of<ProductProvider>(context);
@@ -200,6 +248,45 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
                                             fontFamily: 'Helvetica',
                                           ),
                                         ),
+                                        const SizedBox(height: 8),
+                                        _buildDeliveryStatus(
+                                          item.deliveryStatus,
+                                        ),
+                                        if (item.deliveryStatus != 'Delivered')
+                                          Padding(
+                                            padding: const EdgeInsets.only(
+                                              top: 8,
+                                            ),
+                                            child: ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: const Color(
+                                                  0xFF8B5CF6,
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 8,
+                                                    ),
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(8),
+                                                ),
+                                              ),
+                                              onPressed: () => _confirmDelivery(
+                                                context,
+                                                index,
+                                                productProvider,
+                                              ),
+                                              child: const Text(
+                                                'Confirm Delivery',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 14,
+                                                  fontFamily: 'Helvetica',
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                       ],
                                     ),
                                   ),
