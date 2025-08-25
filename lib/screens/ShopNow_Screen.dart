@@ -115,7 +115,6 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
       _selectedImage = imageUri.isNotEmpty
           ? imageUri
           : 'https://via.placeholder.com/200';
-      _imageViewerVisible = true;
     });
     print('Image viewer opened for: $imageUri');
     showModalBottomSheet(
@@ -561,61 +560,65 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
                           [],
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8E44AD),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        debugPrint('Add to Cart button pressed');
-                        _handleAddToCart();
-                      },
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Ionicons.cart, size: 20, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text(
-                            'Add to Cart',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              fontFamily: 'Helvetica',
-                            ),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8E44AD),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
                           ),
-                        ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          debugPrint('Add to Cart button pressed');
+                          _handleAddToCart();
+                        },
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Ionicons.cart, size: 20, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text(
+                              'Add to Cart',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'Helvetica',
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 10),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF444444),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF444444),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                      ),
-                      onPressed: () {
-                        debugPrint('Close button pressed');
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Close',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          fontFamily: 'Helvetica',
+                        onPressed: () {
+                          debugPrint('Close button pressed');
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontFamily: 'Helvetica',
+                          ),
                         ),
                       ),
                     ),

@@ -42,24 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
     ).then((_) => setState(() => _modalVisible = false));
   }
 
-  void _handleColorChange(String color) {
-    _selectedColor = color;
-    _displayImage = _selectedProduct?.imagesByColor[color] ?? _displayImage;
-    debugPrint('Color changed to: $color, Display image: $_displayImage');
-  }
-
-  void _handleImagePress(String imageUri) {
-    setState(() {
-      _selectedImage = imageUri;
-      _modalVisible = true;
-    });
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => _buildImageViewer(),
-    );
-  }
-
   void _navigateToCart() {
     if (_selectedProduct == null ||
         _selectedSize.isEmpty ||
@@ -90,6 +72,19 @@ class _HomeScreenState extends State<HomeScreen> {
         context,
       ).showSnackBar(SnackBar(content: Text('Failed to navigate to cart: $e')));
     }
+  }
+
+  void _handleImagePress(String imageUri) {
+    setState(() {
+      _selectedImage = imageUri.isNotEmpty
+          ? imageUri
+          : 'https://via.placeholder.com/200';
+    });
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => _buildImageViewer(),
+    );
   }
 
   void _showSortModal() {
@@ -829,7 +824,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                 (color) => InkWell(
                                   onTap: () {
                                     debugPrint('Color selected: $color');
-                                    _handleColorChange(color);
+                                    _selectedColor = color;
+                                    _displayImage =
+                                        _selectedProduct
+                                            ?.imagesByColor[color] ??
+                                        _displayImage;
                                     setModalState(() {});
                                   },
                                   splashColor: const Color(
@@ -861,61 +860,65 @@ class _HomeScreenState extends State<HomeScreen> {
                           [],
                     ),
                     const SizedBox(height: 16),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8E44AD),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        debugPrint('Add to Cart button pressed');
-                        _navigateToCart();
-                      },
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Ionicons.cart, size: 20, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text(
-                            'Add to Cart',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              fontFamily: 'Helvetica',
-                            ),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8E44AD),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
                           ),
-                        ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          debugPrint('Add to Cart button pressed');
+                          _navigateToCart();
+                        },
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Ionicons.cart, size: 20, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text(
+                              'Add to Cart',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'Helvetica',
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF444444),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF444444),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        debugPrint('Close button pressed');
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Close',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          fontFamily: 'Helvetica',
+                        onPressed: () {
+                          debugPrint('Close button pressed');
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontFamily: 'Helvetica',
+                          ),
                         ),
                       ),
                     ),

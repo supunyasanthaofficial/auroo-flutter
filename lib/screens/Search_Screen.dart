@@ -98,7 +98,6 @@ class _SearchScreenState extends State<SearchScreen> {
       _selectedImage = imageUri.isNotEmpty
           ? imageUri
           : 'https://via.placeholder.com/200';
-      _imageViewerVisible = true;
     });
     showModalBottomSheet(
       context: context,
@@ -115,7 +114,7 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => _buildSortModal(),
-    );
+    ).then((_) => setState(() => _sortModalVisible = false));
   }
 
   @override
@@ -131,15 +130,20 @@ class _SearchScreenState extends State<SearchScreen> {
     ];
 
     final filteredProducts =
-        products.where((product) {
-          return product.name.toLowerCase().contains(_searchText.toLowerCase());
-        }).toList()..sort((a, b) {
-          final priceA = a.price;
-          final priceB = b.price;
-          if (_sortType == 'lowToHigh') return priceA.compareTo(priceB);
-          if (_sortType == 'highToLow') return priceB.compareTo(priceA);
-          return 0;
-        });
+        products
+            .where(
+              (product) => product.name.toLowerCase().contains(
+                _searchText.toLowerCase(),
+              ),
+            )
+            .toList()
+          ..sort((a, b) {
+            final priceA = a.price;
+            final priceB = b.price;
+            if (_sortType == 'lowToHigh') return priceA.compareTo(priceB);
+            if (_sortType == 'highToLow') return priceB.compareTo(priceA);
+            return 0;
+          });
 
     return Scaffold(
       backgroundColor: const Color(0xFFF9F6FF),
@@ -754,61 +758,65 @@ class _SearchScreenState extends State<SearchScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8E44AD),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        debugPrint('Add to Cart button pressed');
-                        _navigateToCart();
-                      },
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Ionicons.cart, size: 20, color: Colors.white),
-                          SizedBox(width: 8),
-                          Text(
-                            'Add to Cart',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 14,
-                              fontFamily: 'Helvetica',
-                            ),
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8E44AD),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
                           ),
-                        ],
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                        ),
+                        onPressed: () {
+                          debugPrint('Add to Cart button pressed');
+                          _navigateToCart();
+                        },
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Ionicons.cart, size: 20, color: Colors.white),
+                            SizedBox(width: 8),
+                            Text(
+                              'Add to Cart',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14,
+                                fontFamily: 'Helvetica',
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 12),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF444444),
-                        padding: const EdgeInsets.symmetric(
-                          vertical: 12,
-                          horizontal: 24,
+                    Center(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF444444),
+                          padding: const EdgeInsets.symmetric(
+                            vertical: 12,
+                            horizontal: 24,
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                         ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        debugPrint('Close button pressed');
-                        Navigator.pop(context);
-                      },
-                      child: const Text(
-                        'Close',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          fontFamily: 'Helvetica',
+                        onPressed: () {
+                          debugPrint('Close button pressed');
+                          Navigator.pop(context);
+                        },
+                        child: const Text(
+                          'Close',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                            fontFamily: 'Helvetica',
+                          ),
                         ),
                       ),
                     ),
