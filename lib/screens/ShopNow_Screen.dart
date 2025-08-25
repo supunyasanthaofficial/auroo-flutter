@@ -205,14 +205,11 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
                 children: [
                   IconButton(
                     icon: const Icon(
-                      Ionicons.cart_outline,
+                      Ionicons.cart,
                       color: Colors.white,
-                      size: 28,
+                      size: 26,
                     ),
-                    onPressed: () {
-                      print('Navigating to Cart, items: ${cartItems.length}');
-                      Navigator.pushNamed(context, '/cart');
-                    },
+                    onPressed: () => Navigator.pushNamed(context, '/cart'),
                   ),
                   if (cartItems.isNotEmpty)
                     Positioned(
@@ -349,10 +346,6 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
                           bottom: 8,
                           right: 8,
                           child: Container(
-                            // decoration: BoxDecoration(
-                            //   color: Color(0xFF8E44AD),
-                            //   borderRadius: BorderRadius.circular(25),
-                            // ),
                             child: IconButton(
                               icon: const Icon(
                                 Icons.add_shopping_cart,

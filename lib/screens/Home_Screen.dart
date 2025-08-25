@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import '../context/Product_Provider.dart';
 
@@ -16,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   String _selectedColor = '';
   String _displayImage = '';
   String _selectedImage = '';
+  bool _modalVisible = false;
 
   void _openModal(Product product) {
     if (product.colors.isEmpty || product.size.isEmpty) {
@@ -30,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedColor = product.colors[0];
       _displayImage =
           product.imagesByColor[product.colors[0]] ?? product.thumbnail;
+      _modalVisible = true;
     });
     showModalBottomSheet(
       context: context,
@@ -49,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _handleImagePress(String imageUri) {
     setState(() {
       _selectedImage = imageUri;
+      _modalVisible = true;
     });
     showModalBottomSheet(
       context: context,
@@ -168,21 +172,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   IconButton(
                     icon: const Icon(
-                      Icons.shopping_cart,
+                      Ionicons.cart,
                       color: Colors.white,
                       size: 26,
                     ),
-                    onPressed: () {
-                      debugPrint('Navigating to /cart from app bar');
-                      try {
-                        Navigator.pushNamed(context, '/cart');
-                      } catch (e) {
-                        debugPrint('App bar cart navigation error: $e');
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Failed to open cart: $e')),
-                        );
-                      }
-                    },
+                    onPressed: () => Navigator.pushNamed(context, '/cart'),
                   ),
                   if (cartItems.isNotEmpty)
                     Positioned(
@@ -536,10 +530,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                 bottom: 8,
                                 right: 8,
                                 child: Container(
-                                  // decoration: BoxDecoration(
-                                  //   color: Color(0xFF8E44AD),
-                                  //   borderRadius: BorderRadius.circular(25),
-                                  // ),
                                   child: IconButton(
                                     icon: const Icon(
                                       Icons.add_shopping_cart,
@@ -662,84 +652,111 @@ class _HomeScreenState extends State<HomeScreen> {
       initialChildSize: 0.9,
       maxChildSize: 0.9,
       minChildSize: 0.5,
-      builder: (context, scrollController) => Container(
-        margin: const EdgeInsets.all(20),
-        padding: const EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          boxShadow: const [
-            BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.5), blurRadius: 10),
-          ],
-        ),
-        child: SingleChildScrollView(
-          controller: scrollController,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              GestureDetector(
-                onTap: () => _handleImagePress(_displayImage),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: Image.network(
-                    _displayImage,
-                    height: 250,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    loadingBuilder: (context, child, loadingProgress) {
-                      if (loadingProgress == null) return child;
-                      return const SizedBox(
-                        height: 250,
-                        child: Center(child: CircularProgressIndicator()),
-                      );
-                    },
-                    errorBuilder: (context, error, stackTrace) {
-                      debugPrint('Modal image error: $error');
-                      return const SizedBox(
-                        height: 250,
-                        child: Center(
-                          child: Icon(Icons.image_not_supported, size: 50),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-              Text(
-                _selectedProduct?.name ?? 'Unknown Product',
-                style: const TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF333333),
-                  fontFamily: 'Helvetica',
-                ),
-              ),
-              Text(
-                'LKR ${_selectedProduct?.price.toStringAsFixed(2) ?? '0.00'}',
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF8E44AD),
-                  fontFamily: 'Helvetica',
-                ),
-              ),
-              if (_selectedProduct?.rating != null)
-                Row(
-                  children: List.generate(
-                    5,
-                    (index) => Icon(
-                      index < _selectedProduct!.rating
-                          ? Icons.star
-                          : Icons.star_border,
-                      size: 18,
-                      color: const Color(0xFFF1C40F),
+      snap: true,
+      snapSizes: const [0.5, 0.9],
+      builder: (context, scrollController) => GestureDetector(
+        onPanStart: (_) {},
+        child: Container(
+          margin: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: const [
+              BoxShadow(color: Color.fromRGBO(0, 0, 0, 0.5), blurRadius: 10),
+            ],
+          ),
+          child: SingleChildScrollView(
+            controller: scrollController,
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    debugPrint('Image tapped: $_displayImage');
+                    _handleImagePress(_displayImage);
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(12),
+                    child: Image.network(
+                      _displayImage,
+                      height: 250,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      loadingBuilder: (context, child, loadingProgress) {
+                        if (loadingProgress == null) return child;
+                        return const SizedBox(
+                          height: 250,
+                          child: Center(child: CircularProgressIndicator()),
+                        );
+                      },
+                      errorBuilder: (context, error, stackTrace) {
+                        debugPrint('Modal image error: $error');
+                        return const SizedBox(
+                          height: 250,
+                          child: Center(
+                            child: Icon(Icons.image_not_supported, size: 50),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
-              if (_selectedProduct?.description != null) ...[
+                Text(
+                  _selectedProduct?.name ?? 'Unknown Product',
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF333333),
+                    fontFamily: 'Helvetica',
+                  ),
+                ),
+                Text(
+                  'LKR ${_selectedProduct?.price.toStringAsFixed(2) ?? '0.00'}',
+                  style: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF8E44AD),
+                    fontFamily: 'Helvetica',
+                  ),
+                ),
+                if (_selectedProduct?.rating != null)
+                  Row(
+                    children: List.generate(
+                      5,
+                      (index) => Icon(
+                        index < _selectedProduct!.rating
+                            ? Icons.star
+                            : Icons.star_border,
+                        size: 18,
+                        color: const Color(0xFFF1C40F),
+                      ),
+                    ),
+                  ),
+                if (_selectedProduct?.description != null) ...[
+                  const SizedBox(height: 12),
+                  const Text(
+                    'Description:',
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF555555),
+                      fontFamily: 'Helvetica',
+                    ),
+                  ),
+                  Text(
+                    _selectedProduct!.description,
+                    style: const TextStyle(
+                      fontSize: 13,
+                      color: Color(0xFF444444),
+                      fontFamily: 'Helvetica',
+                    ),
+                  ),
+                ],
                 const SizedBox(height: 12),
                 const Text(
-                  'Description:',
+                  'Select Size:',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
@@ -747,149 +764,147 @@ class _HomeScreenState extends State<HomeScreen> {
                     fontFamily: 'Helvetica',
                   ),
                 ),
-                Text(
-                  _selectedProduct!.description,
-                  style: const TextStyle(
-                    fontSize: 13,
-                    color: Color(0xFF444444),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 6,
+                  children:
+                      _selectedProduct?.size
+                          .map(
+                            (size) => GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                debugPrint('Size selected: $size');
+                                setState(() => _selectedSize = size);
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 6,
+                                  horizontal: 12,
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: _selectedSize == size
+                                        ? const Color(0xFF8E44AD)
+                                        : const Color(0xFFCCCCCC),
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                  color: _selectedSize == size
+                                      ? const Color(0xFFF1E6FA)
+                                      : Colors.white,
+                                ),
+                                child: Text(
+                                  size,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    color: Color(0xFF333333),
+                                    fontFamily: 'Helvetica',
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList() ??
+                      [],
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Select Color:',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF555555),
                     fontFamily: 'Helvetica',
+                  ),
+                ),
+                Wrap(
+                  spacing: 10,
+                  runSpacing: 10,
+                  children:
+                      _selectedProduct?.colors
+                          .map(
+                            (color) => GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                debugPrint('Color selected: $color');
+                                _handleColorChange(color);
+                              },
+                              child: Container(
+                                width: 24,
+                                height: 24,
+                                decoration: BoxDecoration(
+                                  color: Color(
+                                    int.parse(color.replaceFirst('#', '0xFF')),
+                                  ),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: _selectedColor == color
+                                        ? const Color(0xFF8E44AD)
+                                        : const Color(0xFFCCCCCC),
+                                    width: _selectedColor == color ? 2 : 1,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          )
+                          .toList() ??
+                      [],
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF8E44AD),
+                    padding: const EdgeInsets.all(12),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    debugPrint('Add to Cart button pressed');
+                    _navigateToCart();
+                  },
+                  child: const Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Ionicons.cart, size: 20, color: Colors.white),
+                      SizedBox(width: 8),
+                      Text(
+                        'Add to Cart',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14,
+                          fontFamily: 'Helvetica',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF444444),
+                    padding: const EdgeInsets.all(10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  onPressed: () {
+                    debugPrint('Close button pressed');
+                    Navigator.pop(context);
+                    setState(() => _modalVisible = false);
+                  },
+                  child: const Text(
+                    'Close',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      fontFamily: 'Helvetica',
+                    ),
                   ),
                 ),
               ],
-              const SizedBox(height: 12),
-              const Text(
-                'Select Size:',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF555555),
-                  fontFamily: 'Helvetica',
-                ),
-              ),
-              Wrap(
-                spacing: 8,
-                runSpacing: 6,
-                children:
-                    _selectedProduct?.size
-                        .map(
-                          (size) => GestureDetector(
-                            onTap: () => setState(() => _selectedSize = size),
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 6,
-                                horizontal: 12,
-                              ),
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                  color: _selectedSize == size
-                                      ? const Color(0xFF8E44AD)
-                                      : const Color(0xFFCCCCCC),
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                                color: _selectedSize == size
-                                    ? const Color(0xFFF1E6FA)
-                                    : Colors.white,
-                              ),
-                              child: Text(
-                                size,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  color: Color(0xFF333333),
-                                  fontFamily: 'Helvetica',
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList() ??
-                    [],
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'Select Color:',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF555555),
-                  fontFamily: 'Helvetica',
-                ),
-              ),
-              Wrap(
-                spacing: 10,
-                runSpacing: 10,
-                children:
-                    _selectedProduct?.colors
-                        .map(
-                          (color) => GestureDetector(
-                            onTap: () => _handleColorChange(color),
-                            child: Container(
-                              width: 24,
-                              height: 24,
-                              decoration: BoxDecoration(
-                                color: Color(
-                                  int.parse(color.replaceFirst('#', '0xFF')),
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: _selectedColor == color
-                                      ? const Color(0xFF8E44AD)
-                                      : const Color(0xFFCCCCCC),
-                                  width: _selectedColor == color ? 2 : 1,
-                                ),
-                              ),
-                            ),
-                          ),
-                        )
-                        .toList() ??
-                    [],
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF8E44AD),
-                  padding: const EdgeInsets.all(10),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-                onPressed: _navigateToCart,
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.shopping_cart, size: 20, color: Colors.white),
-                    SizedBox(width: 6),
-                    Text(
-                      'Add to Cart',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 14,
-                        fontFamily: 'Helvetica',
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 12),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF444444),
-                  padding: const EdgeInsets.all(8),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                ),
-                onPressed: () => Navigator.pop(context),
-                child: const Text(
-                  'Close',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontFamily: 'Helvetica',
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
         ),
       ),
