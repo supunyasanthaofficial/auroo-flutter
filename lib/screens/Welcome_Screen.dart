@@ -58,7 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   void initState() {
     super.initState();
     // Navigate to /home after a delay to show the logo
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 2), () {
       if (mounted) {
         debugPrint('Navigating to /home from WelcomeScreen');
         try {
