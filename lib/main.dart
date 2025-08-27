@@ -11,6 +11,7 @@ import 'screens/CheckOut_Screen.dart';
 import 'screens/Payment_Screen.dart';
 import 'screens/COD_Payment_Screen.dart';
 import 'screens/Card_Payment_Screen.dart';
+import 'screens/Tracking_Details_Screen.dart';
 
 import 'navigation/bottom_nav_bar.dart';
 
@@ -64,6 +65,7 @@ class MyApp extends StatelessWidget {
           '/payment': (context) => const PaymentScreen(),
           '/cod_payment': (context) => const CODPaymentScreen(),
           '/card_payment': (context) => const CardPaymentScreen(),
+          '/tracking_details': (context) => const TrackingDetailsScreen(),
         },
       ),
     );
