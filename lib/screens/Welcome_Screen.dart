@@ -104,8 +104,8 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
             child: Center(
               child: Image.asset(
                 'lib/assets/images/auroo1.png',
-                width: 150,
-                height: 150,
+                width: 200,
+                height: 200,
                 fit: BoxFit.contain,
                 errorBuilder: (context, error, stackTrace) {
                   debugPrint('Logo image load failed: $error');
