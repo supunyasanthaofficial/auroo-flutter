@@ -196,6 +196,7 @@ class _TrackingDetailsScreenState extends State<TrackingDetailsScreen> {
                 fontFamily: 'Helvetica',
               ),
             ),
+            iconTheme: const IconThemeData(color: Colors.white),
             flexibleSpace: Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
