@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import '../context/Product_Provider.dart';
+import 'tracking_details_screen.dart';
 
 class MyOrdersScreen extends StatefulWidget {
   const MyOrdersScreen({super.key});
@@ -67,15 +68,24 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
     int index,
     ProductProvider provider,
   ) {
-    provider.updateDeliveryStatus(index, 'Delivered');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text(
-          'Order marked as delivered! Thank you for your purchase.',
+    if (index >= 0 && index < provider.orders.length) {
+      provider.updateDeliveryStatus(index, 'Delivered');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Order marked as delivered! Thank you for your purchase.',
+          ),
+          duration: Duration(seconds: 3),
         ),
-        duration: Duration(seconds: 3),
-      ),
-    );
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              TrackingDetailsScreen(order: provider.orders[index]),
+        ),
+      );
+    }
   }
 
   Widget _buildDeliveryStatus(String status) {
@@ -118,7 +128,7 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F4F6),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight + 42),
+        preferredSize: const Size.fromHeight(kToolbarHeight + 20),
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
@@ -180,8 +190,19 @@ class _MyOrdersScreenState extends State<MyOrdersScreen> {
 
                       return GestureDetector(
                         onLongPress: () => _toggleSelect(index),
-                        onTap: () =>
-                            _selected.isNotEmpty ? _toggleSelect(index) : null,
+                        onTap: () {
+                          if (_selected.isNotEmpty) {
+                            _toggleSelect(index);
+                          } else {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    TrackingDetailsScreen(order: item),
+                              ),
+                            );
+                          }
+                        },
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(16, 0, 16, 14),
                           padding: const EdgeInsets.all(14),

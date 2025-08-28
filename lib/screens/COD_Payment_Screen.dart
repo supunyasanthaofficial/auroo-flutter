@@ -69,7 +69,7 @@ class CODPaymentScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFF8FAFC),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight + 30),
+        preferredSize: const Size.fromHeight(kToolbarHeight + 20),
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

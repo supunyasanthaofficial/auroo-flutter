@@ -134,7 +134,7 @@ class _CartScreenState extends State<CartScreen> {
     final productProvider = context.watch<ProductProvider>();
     final cartItems = productProvider.cartItems;
 
-    if (cartItems.isEmpty || productProvider.placeOrder == null) {
+    if (cartItems.isEmpty) {
       return const Scaffold(
         body: Center(
           child: Text(
@@ -152,7 +152,7 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFFFFFFF),
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(kToolbarHeight + 30),
+        preferredSize: const Size.fromHeight(kToolbarHeight + 20),
         child: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(

@@ -25,8 +25,8 @@ class _TrackingDetailsScreenState extends State<TrackingDetailsScreen> {
     super.initState();
     // Initialize tracking data
     _loadTrackingData();
-    // Start timer to refresh tracking data every 10 seconds
-    _timer = Timer.periodic(const Duration(seconds: 10), (timer) {
+    // Start timer to refresh tracking data every 60 seconds
+    _timer = Timer.periodic(const Duration(seconds: 60), (timer) {
       if (mounted) {
         _loadTrackingData(); // Refresh data to reflect status updates
       }
@@ -39,9 +39,6 @@ class _TrackingDetailsScreenState extends State<TrackingDetailsScreen> {
     super.dispose();
   }
 
-  // Load tracking data for frontend testing
-  // Backend developer: Replace this method with an API call to fetch tracking data
-  // Expected format: List<Map<String, dynamic>> with keys 'title', 'date', 'isCompleted'
   void _loadTrackingData() {
     setState(() {
       isLoading = true;
@@ -144,8 +141,6 @@ class _TrackingDetailsScreenState extends State<TrackingDetailsScreen> {
     );
   }
 
-  // Mock data for frontend testing
-  // Backend developer: Replace this with API response parsing
   List<Map<String, dynamic>> getTrackingSteps(String deliveryStatus) {
     final now = DateTime.now();
     final formatter = DateFormat('yyyy-MM-dd HH:mm');
