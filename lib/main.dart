@@ -65,7 +65,10 @@ class MyApp extends StatelessWidget {
           '/payment': (context) => const PaymentScreen(),
           '/cod_payment': (context) => const CODPaymentScreen(),
           '/card_payment': (context) => const CardPaymentScreen(),
-          '/tracking_details': (context) => const TrackingDetailsScreen(),
+          '/tracking_details': (context) {
+            final args = ModalRoute.of(context)!.settings.arguments as CartItem;
+            return TrackingDetailsScreen(order: args);
+          },
         },
       ),
     );
