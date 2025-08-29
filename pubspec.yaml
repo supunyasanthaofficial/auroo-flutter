@@ -76,6 +76,7 @@ flutter:
   assets:
     - lib/assets/images/auroo1.png
     - lib/assets/images/Auroo2.png
+    - lib/assets/images/auroo3.jpg.jpg
 
   # To add assets to your application, add an assets section, like this:
   # assets:
