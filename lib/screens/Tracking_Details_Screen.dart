@@ -254,9 +254,7 @@ class _TrackingDetailsScreenState extends State<TrackingDetailsScreen> {
                                 ),
                               ),
                               Text(
-                                order.price != null
-                                    ? 'LKR ${order.price!.toStringAsFixed(2)}'
-                                    : 'N/A',
+                                'LKR ${order.price!.toStringAsFixed(2)}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   color: Color(0xFF4B5563),
