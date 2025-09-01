@@ -760,24 +760,6 @@ class _SearchScreenState extends State<SearchScreen> {
                           [],
                     ),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Reviews:',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF555555),
-                        fontFamily: 'Helvetica',
-                      ),
-                    ),
-                    const Text(
-                      'No reviews available',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: Color(0xFF444444),
-                        fontFamily: 'Helvetica',
-                      ),
-                    ),
-                    const SizedBox(height: 12),
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
