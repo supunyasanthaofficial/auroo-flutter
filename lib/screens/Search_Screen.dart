@@ -634,6 +634,26 @@ class _SearchScreenState extends State<SearchScreen> {
                         fontFamily: 'Helvetica',
                       ),
                     ),
+                    if (_selectedProduct?.description != null) ...[
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Description:',
+                        style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w600,
+                          color: Color(0xFF555555),
+                          fontFamily: 'Helvetica',
+                        ),
+                      ),
+                      Text(
+                        _selectedProduct!.description!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF444444),
+                          fontFamily: 'Helvetica',
+                        ),
+                      ),
+                    ],
                     const SizedBox(height: 12),
                     const Text(
                       'Select Size:',
