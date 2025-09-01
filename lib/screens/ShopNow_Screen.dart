@@ -124,20 +124,6 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
     );
   }
 
-  Widget _buildStarRating(double? rating) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: List.generate(
-        5,
-        (index) => Icon(
-          index < (rating?.floor() ?? 0) ? Icons.star : Icons.star_border,
-          size: 16,
-          color: const Color(0xFFF1C40F),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final productProvider = context.watch<ProductProvider>();
@@ -431,22 +417,27 @@ class _ShopNowScreenState extends State<ShopNowScreen> {
                         fontFamily: 'Helvetica',
                       ),
                     ),
-                    if (_selectedProduct?.rating != null) ...[
-                      const SizedBox(height: 6),
-                      _buildStarRating(_selectedProduct!.rating),
-                    ],
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Text(
-                        _selectedProduct?.description ??
-                            'No description available',
-                        style: const TextStyle(
+                    if (_selectedProduct?.description != null) ...[
+                      const SizedBox(height: 12),
+                      const Text(
+                        'Description:',
+                        style: TextStyle(
                           fontSize: 14,
+                          fontWeight: FontWeight.w600,
                           color: Color(0xFF555555),
                           fontFamily: 'Helvetica',
                         ),
                       ),
-                    ),
+                      Text(
+                        _selectedProduct!.description!,
+                        style: const TextStyle(
+                          fontSize: 13,
+                          color: Color(0xFF444444),
+                          fontFamily: 'Helvetica',
+                        ),
+                      ),
+                    ],
+                    const SizedBox(height: 12),
                     const Text(
                       'Size:',
                       style: TextStyle(
