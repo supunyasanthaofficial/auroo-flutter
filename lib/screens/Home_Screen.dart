@@ -769,19 +769,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         fontFamily: 'Helvetica',
                       ),
                     ),
-                    if (_selectedProduct?.rating != null)
-                      Row(
-                        children: List.generate(
-                          5,
-                          (index) => Icon(
-                            index < _selectedProduct!.rating
-                                ? Icons.star
-                                : Icons.star_border,
-                            size: 18,
-                            color: const Color(0xFFF1C40F),
-                          ),
-                        ),
-                      ),
                     if (_selectedProduct?.description != null) ...[
                       const SizedBox(height: 12),
                       const Text(
