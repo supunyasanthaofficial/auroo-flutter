@@ -3,6 +3,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../context/Product_Provider.dart';
+import '../widgets/status_label.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -64,7 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
           quantity: 1,
         ),
       );
-      Navigator.pop(context); // Close modal
+      Navigator.pop(context);
       debugPrint('Navigating to /cart');
       Navigator.pushNamed(context, '/cart');
     } catch (e) {
@@ -128,7 +129,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'subtitle': 'Your dress up clothes first',
         'buttonText': 'Shop Now',
         'image':
-            'https://cdn.pixabay.com/photo/2021/09/03/13/32/portrait-6595821_1280.jpg',
+            'https://cdn.pixabay.com/photo/2016/03/23/08/34/woman-1274360_640.jpg',
       },
       {
         'id': '2',
@@ -144,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
         'subtitle': 'Explore our latest collections',
         'buttonText': 'Visit Now',
         'image':
-            'https://cdn.pixabay.com/photo/2022/08/20/05/59/nature-7398357_1280.jpg',
+            'https://cdn.pixabay.com/photo/2021/04/17/18/26/woman-6186493_1280.jpg',
         'url': 'https://www.auroo.com',
       },
     ];
@@ -215,8 +216,8 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             Container(
-              height: 200,
-              margin: const EdgeInsets.symmetric(vertical: 12),
+              height: 220,
+              margin: const EdgeInsets.symmetric(vertical: 16),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -224,20 +225,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 itemBuilder: (context, index) {
                   final banner = banners[index];
                   return Container(
-                    width: MediaQuery.of(context).size.width - 32,
+                    width: MediaQuery.of(context).size.width - 40,
                     margin: const EdgeInsets.only(right: 16),
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                       boxShadow: const [
                         BoxShadow(
-                          color: Color.fromRGBO(0, 0, 0, 0.1),
-                          blurRadius: 6,
+                          color: Color.fromRGBO(0, 0, 0, 0.15),
+                          blurRadius: 8,
                           offset: Offset(0, 4),
                         ),
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(16),
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -246,49 +247,63 @@ class _HomeScreenState extends State<HomeScreen> {
                             fit: BoxFit.cover,
                             loadingBuilder: (context, child, loadingProgress) {
                               if (loadingProgress == null) return child;
-                              return const Center(
-                                child: CircularProgressIndicator(),
+                              return Container(
+                                color: const Color(0xFFE5E7EB),
+                                child: const Center(
+                                  child: CircularProgressIndicator(),
+                                ),
                               );
                             },
                             errorBuilder: (context, error, stackTrace) {
                               debugPrint('Banner image error: $error');
-                              return const Icon(
-                                Icons.image_not_supported,
-                                size: 50,
-                                color: Colors.grey,
+                              return Container(
+                                color: const Color(0xFFE5E7EB),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.image_not_supported,
+                                    size: 50,
+                                    color: Colors.grey,
+                                  ),
+                                ),
                               );
                             },
                           ),
                           Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
                                 colors: [
-                                  const Color(0xFFC6A1CF).withOpacity(0.7),
-                                  const Color(0xFFD8BFD8).withOpacity(0.9),
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.6),
                                 ],
+                                stops: const [0.3, 1.0],
                               ),
                             ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
                             child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   banner['title']!,
                                   style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.w700,
+                                    fontSize: 26,
+                                    fontWeight: FontWeight.w800,
                                     color: Colors.white,
                                     fontFamily: 'Helvetica',
                                     shadows: [
                                       Shadow(
-                                        color: Color.fromRGBO(0, 0, 0, 0.3),
-                                        offset: Offset(0, 1),
-                                        blurRadius: 3,
+                                        color: Color.fromRGBO(0, 0, 0, 0.6),
+                                        offset: Offset(0, 2),
+                                        blurRadius: 6,
                                       ),
                                     ],
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(height: 8),
+                                const SizedBox(height: 6),
                                 Text(
                                   banner['subtitle']!,
                                   style: const TextStyle(
@@ -298,25 +313,26 @@ class _HomeScreenState extends State<HomeScreen> {
                                     fontFamily: 'Helvetica',
                                     shadows: [
                                       Shadow(
-                                        color: Color.fromRGBO(0, 0, 0, 0.3),
+                                        color: Color.fromRGBO(0, 0, 0, 0.5),
                                         offset: Offset(0, 1),
-                                        blurRadius: 3,
+                                        blurRadius: 4,
                                       ),
                                     ],
                                   ),
-                                  textAlign: TextAlign.center,
                                 ),
-                                const SizedBox(height: 12),
+                                const SizedBox(height: 16),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xFF8E44AD),
+                                    foregroundColor: Colors.white,
                                     padding: const EdgeInsets.symmetric(
-                                      vertical: 10,
-                                      horizontal: 20,
+                                      vertical: 12,
+                                      horizontal: 24,
                                     ),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
                                     ),
+                                    elevation: 3,
                                   ),
                                   onPressed: () async {
                                     if (banner.containsKey('url') &&
@@ -400,7 +416,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -567,6 +583,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ),
                                   ),
                                 ],
+                              ),
+                              Positioned(
+                                top: 8,
+                                left: 8,
+                                child: StatusLabel(
+                                  status: product.status,
+                                  isOutOfStock: product.isOutOfStock,
+                                ),
                               ),
                               Positioned(
                                 bottom: 8,
@@ -751,14 +775,25 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    Text(
-                      _selectedProduct?.name ?? 'Unknown Product',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF333333),
-                        fontFamily: 'Helvetica',
-                      ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Text(
+                            _selectedProduct?.name ?? 'Unknown Product',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w700,
+                              color: Color(0xFF333333),
+                              fontFamily: 'Helvetica',
+                            ),
+                          ),
+                        ),
+                        if (_selectedProduct != null)
+                          StatusLabel(
+                            status: _selectedProduct!.status,
+                            isOutOfStock: _selectedProduct!.isOutOfStock,
+                          ),
+                      ],
                     ),
                     Text(
                       'LKR ${_selectedProduct?.price.toStringAsFixed(2) ?? '0.00'}',
@@ -786,6 +821,25 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontSize: 13,
                           color: Color(0xFF444444),
                           fontFamily: 'Helvetica',
+                        ),
+                      ),
+                    ],
+                    if (_selectedProduct?.isOutOfStock == true) ...[
+                      const SizedBox(height: 12),
+                      Container(
+                        padding: const EdgeInsets.all(8),
+                        decoration: BoxDecoration(
+                          color: Colors.red[50],
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.red),
+                        ),
+                        child: const Text(
+                          'This product is currently out of stock',
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontWeight: FontWeight.w500,
+                            fontFamily: 'Helvetica',
+                          ),
                         ),
                       ),
                     ],
@@ -827,13 +881,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8),
                                   ),
-                                  onSelected: (selected) {
-                                    if (selected) {
-                                      debugPrint('Size selected: $size');
-                                      _selectedSize = size;
-                                      setModalState(() {});
-                                    }
-                                  },
+                                  onSelected:
+                                      _selectedProduct?.isOutOfStock == true
+                                      ? null
+                                      : (selected) {
+                                          if (selected) {
+                                            debugPrint('Size selected: $size');
+                                            _selectedSize = size;
+                                            setModalState(() {});
+                                          }
+                                        },
                                 ),
                               )
                               .toList() ??
@@ -857,15 +914,17 @@ class _HomeScreenState extends State<HomeScreen> {
                           _selectedProduct?.colors
                               .map(
                                 (color) => InkWell(
-                                  onTap: () {
-                                    debugPrint('Color selected: $color');
-                                    _selectedColor = color;
-                                    _displayImage =
-                                        _selectedProduct
-                                            ?.imagesByColor[color] ??
-                                        _displayImage;
-                                    setModalState(() {});
-                                  },
+                                  onTap: _selectedProduct?.isOutOfStock == true
+                                      ? null
+                                      : () {
+                                          debugPrint('Color selected: $color');
+                                          _selectedColor = color;
+                                          _displayImage =
+                                              _selectedProduct
+                                                  ?.imagesByColor[color] ??
+                                              _displayImage;
+                                          setModalState(() {});
+                                        },
                                   splashColor: const Color(
                                     0xFF8E44AD,
                                   ).withOpacity(0.3),
@@ -898,7 +957,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Center(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8E44AD),
+                          backgroundColor:
+                              _selectedProduct?.isOutOfStock == true
+                              ? Colors.grey
+                              : const Color(0xFF8E44AD),
                           padding: const EdgeInsets.symmetric(
                             vertical: 12,
                             horizontal: 24,
@@ -907,19 +969,31 @@ class _HomeScreenState extends State<HomeScreen> {
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                        onPressed: () {
-                          debugPrint('Add to Cart button pressed');
-                          _navigateToCart();
-                        },
-                        child: const Row(
+                        onPressed: _selectedProduct?.isOutOfStock == true
+                            ? null
+                            : () {
+                                debugPrint('Add to Cart button pressed');
+                                _navigateToCart();
+                              },
+                        child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Icon(Ionicons.cart, size: 20, color: Colors.white),
-                            SizedBox(width: 8),
+                            Icon(
+                              Ionicons.cart,
+                              size: 20,
+                              color: _selectedProduct?.isOutOfStock == true
+                                  ? Colors.white70
+                                  : Colors.white,
+                            ),
+                            const SizedBox(width: 8),
                             Text(
-                              'Add to Cart',
+                              _selectedProduct?.isOutOfStock == true
+                                  ? 'Out of Stock'
+                                  : 'Add to Cart',
                               style: TextStyle(
-                                color: Colors.white,
+                                color: _selectedProduct?.isOutOfStock == true
+                                    ? Colors.white70
+                                    : Colors.white,
                                 fontWeight: FontWeight.w600,
                                 fontSize: 14,
                                 fontFamily: 'Helvetica',
@@ -984,7 +1058,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 debugPrint('Image viewer error: $error');
                 return const Icon(
                   Icons.image_not_supported,
-                  size: 50,
+                  size: 40,
                   color: Colors.white,
                 );
               },
